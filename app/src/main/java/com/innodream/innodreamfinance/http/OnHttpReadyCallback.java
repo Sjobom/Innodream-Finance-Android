@@ -1,4 +1,4 @@
-package com.innodream.innodreamfinance;
+package com.innodream.innodreamfinance.http;
 
 /**
  * Created by Anders on 2017-10-15.

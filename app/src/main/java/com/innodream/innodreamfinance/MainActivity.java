@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.innodream.innodreamfinance.finance.stock;
+import com.innodream.innodreamfinance.http.HttpGetRequest;
+import com.innodream.innodreamfinance.http.OnHttpReadyCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,12 +34,8 @@ public class MainActivity extends Activity implements OnHttpReadyCallback {
     }
 
     public void getDataPressed(View v) {
-        String companyName = companyNameEditText.getText().toString();
-        HttpGetRequest httpGetRequest = new HttpGetRequest(mainActivity);
-        String api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={COMPANY_NAME}&apikey=SFZ2D9HYHGJNX02R";
-        api_url = api_url.replace("{COMPANY_NAME}", companyName);
-        Log.d("API URL ", api_url);
-        httpGetRequest.execute(api_url);
+        String company_ticker = companyNameEditText.getText().toString();
+        stock.get_latest_stock_price(mainActivity, company_ticker);
     }
 
 
