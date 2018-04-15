@@ -1,19 +1,19 @@
 package com.innodream.innodreamfinance;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.view.MenuItem;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.innodream.innodreamfinance.http.AlphaVantageClient;
 import com.innodream.innodreamfinance.http.AlphaVantageInterface;
-import com.innodream.innodreamfinance.http.OnHttpReadyCallback;
 import com.innodream.innodreamfinance.model.Stock;
 import com.innodream.innodreamfinance.model.Ticker;
 import com.innodream.innodreamfinance.model.primitives.Price;
@@ -27,23 +27,54 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends Activity implements OnHttpReadyCallback {
+public class MainActivity extends Activity {
 
-    private MainActivity mainActivity = this;
-    private RecyclerView ticker_recycler_view;
-    private RecyclerView.Adapter ticker_adapter;
-    private RecyclerView.LayoutManager ticker_layout_manager;
+
+
     private Map<String,Stock> Stock;
+    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            switch(item.getItemId()) {
+                case R.id.action_recommendation:
+                    transaction.replace(R.id.content, new RecommendationFragment()).commit();
+                    return true;
+                case R.id.action_alarm:
+                    return true;
+                case R.id.action_technical_analysis:
+                    transaction.replace(R.id.content, new TechnicalAnalysisFragment()).commit();
+                    return true;
+                case R.id.action_information:
+                    return true;
+                case R.id.action_portfolio:
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        inflate_company_recycler_view();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavigationItemSelectedListener);
+
+        // Initialize the recommendation fragment
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content, new RecommendationFragment()).commit();
+
+        Stock = new HashMap<>();
+
+        // TEST CODE
         Ticker ticker = new Ticker("ABB.ST", "ABB");
         get_latest_stock_price(ticker, "compact");
 
-        Stock = new HashMap<>();
     }
 
 
@@ -80,46 +111,5 @@ public class MainActivity extends Activity implements OnHttpReadyCallback {
             }
         });
 
-    }
-
-    private void inflate_company_recycler_view() {
-        ticker_recycler_view = findViewById(R.id.ticker_recycler_view);
-        ticker_recycler_view.setHasFixedSize(true); // Only for performance improvements
-
-        ticker_layout_manager = new LinearLayoutManager(this);
-        ticker_recycler_view.setLayoutManager(ticker_layout_manager);
-
-        // Add lines between the rows
-        DividerItemDecoration ticker_divider_decoration = new DividerItemDecoration(
-                ticker_recycler_view.getContext(),
-                DividerItemDecoration.VERTICAL
-        );
-        ticker_recycler_view.addItemDecoration(ticker_divider_decoration);
-
-        // Get the tickers
-        Ticker[] tickers = new Ticker[3];
-        tickers[0] = new Ticker("ABB:ST", "ABB");
-        tickers[1] = new Ticker("ERIC-B.ST", "Ericsson B");
-        tickers[2] = new Ticker("ALFA.ST", "Alfa Laval");
-
-        ticker_adapter = new TickerAdapter(tickers);
-
-        ticker_recycler_view.setAdapter(ticker_adapter);
-
-    }
-
-
-    @Override
-    public void onHttpReady(String result) {
-//        try {
-//            JSONObject jsonObject = new JSONObject(result);
-//            JSONObject time_series = jsonObject.getJSONObject("Time Series (Daily)");
-//            Iterator<String> keys = time_series.keys();
-//            String price = time_series.getJSONObject(keys.next()).getString("4. close");
-//            resultTextView.setText(price);
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
     }
 }
