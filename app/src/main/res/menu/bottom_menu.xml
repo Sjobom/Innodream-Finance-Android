@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_favorites"
+        android:enabled="true"
+        android:icon="@drawable/alarm"
+        android:title="@string/alarm" />
+    <item
+        android:id="@+id/action_favorites"
+        android:enabled="true"
+        android:icon="@drawable/finance"
+        android:title="@string/ta" />
+    <item
+        android:id="@+id/action_schedules"
+        android:enabled="true"
+        android:icon="@drawable/bank"
+        android:title="@string/recommendation"/>
+    <item
+        android:id="@+id/action_music"
+        android:enabled="true"
+        android:icon="@drawable/briefcase"
+        android:title="@string/portfolio"/>
+    <item
+        android:id="@+id/action_music"
+        android:enabled="true"
+        android:icon="@drawable/bookmark_outline"
+        android:title="@string/information"/>
+
+</menu>
