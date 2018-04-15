@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">InnoDream Finance</string>
+    <string name="graph">Graphs</string>
+    <string name="recommendation">Recommendation</string>
+    <string name="ta">Technical Analysis</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="information">Information</string>
+    <string name="alarm">Alarm</string>
     <string name="API_KEY">SFZ2D9HYHGJNX02R</string>
 </resources>
+
